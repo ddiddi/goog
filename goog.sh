@@ -1,12 +1,26 @@
-lucky() {
-        inputL="$*"
-        inputL=${inputL// /+}
-        echo "In Lucky"
-        echo $inputL
-        query=$( curl -s --get --data-urlencode "q=$inputL" http://ajax.googleapis.com/ajax/services/search/web?v=1.0 | sed 's/"unescapedUrl":"\([^"]*\).*/\1/;s/.*GwebSearch",//')
-        echo $query
-        google-chrome $query
+all() {
+    inputA="$*"
+    inputA=${inputA// /+}
+    echo "In All"
+    query=$( curl -s --get --data-urlencode "q=$inputA" http://ajax.googleapis.com/ajax/services/search/web?v=1.0 | jq '.responseData.results[].unescapedUrl')
+    for urlu in $query
+    do
+        urlu=${urlu//\"/}
+        google-chrome $urlu
+    done 
+    
 }
+
+lucky() {
+    inputL="$*"
+    inputL=${inputL// /+}
+    echo "In Lucky"
+    echo $inputL
+    query=$( curl -s --get --data-urlencode "q=$inputL" http://ajax.googleapis.com/ajax/services/search/web?v=1.0 | sed 's/"unescapedUrl":"\([^"]*\).*/\1/;s/.*GwebSearch",//')
+    echo $query
+    google-chrome $query
+}
+
 google() {
 
     #Set up function/addons table
@@ -21,7 +35,7 @@ google() {
 
 
     addons[1]="lucky"
-    addons[2]="allasdasd"
+    addons[2]="all"
 
     #Push input from all arguments into one string
     input="$*"
@@ -43,7 +57,7 @@ google() {
 		addonsBool[2]=1 
                 regularSearch=0
                 echo "In Case All"
-                input=${input#$i}
+                input=${input//$i/}
 		;;
 			
 		-i | --image| -m | --meme)
