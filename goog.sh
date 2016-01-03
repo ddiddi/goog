@@ -10,7 +10,7 @@ lucky() {
 google() {
 
     #Set up function/addons table
-    regularSearch = 1;
+    regularSearch=1;
     declare -a addons
     declare -a addonsBool
     num_addons=2
@@ -59,7 +59,7 @@ google() {
     echo "Before Output"
     echo $input
     #lucky $input
-    if [ ${regularSearch} -eq 0 ]
+    if [ $regularSearch -eq 0 ]
     then
         for ((i=1;i<=num_addons;i++)) do
             if [ ${addonsBool[$i]} -eq 1 ] 
